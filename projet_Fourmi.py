@@ -186,9 +186,10 @@ def droite():
 
 def deplacement():
     global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, launch
-    launch = canevas.after(10, deplacement)
+    launch = canevas.after(25, deplacement)
     if position_tete_fourmi == haut:
         y_fourmi -= 1
+        tore()
         if config_courante[y_fourmi][x_fourmi] == 0:
             config_courante[y_fourmi][x_fourmi] += 1
             position_tete_fourmi = droite
@@ -201,6 +202,7 @@ def deplacement():
             return
     elif position_tete_fourmi == bas:
         y_fourmi += 1
+        tore()
         if config_courante[y_fourmi][x_fourmi] == 0:
             config_courante[y_fourmi][x_fourmi] += 1
             position_tete_fourmi = gauche
@@ -213,6 +215,7 @@ def deplacement():
             return
     elif position_tete_fourmi == droite:
         x_fourmi += 1
+        tore()
         if config_courante[y_fourmi][x_fourmi] == 0:
             config_courante[y_fourmi][x_fourmi] += 1
             position_tete_fourmi = bas
@@ -225,6 +228,7 @@ def deplacement():
             return     
     elif position_tete_fourmi == gauche:
         x_fourmi -= 1
+        tore()
         if config_courante[y_fourmi][x_fourmi] == 0:
             config_courante[y_fourmi][x_fourmi] += 1
             position_tete_fourmi = haut
@@ -246,6 +250,20 @@ def pause():
     else:
         launch = canevas.after(500, deplacement)  
         boutton_pause.config(text="Pause")
+
+
+def tore():
+    global x_fourmi, y_fourmi, n
+    if x_fourmi > n:
+        x_fourmi == 0 
+    if x_fourmi < 0:
+        x_fourmi == n
+    if y_fourmi > n:
+        y_fourmi == 0 
+    if y_fourmi < 0:
+        y_fourmi == n 
+    
+
 #########################################
 # partie principale
 
