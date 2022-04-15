@@ -39,76 +39,13 @@ config_courante = []
 
 #########################################
 # fonctions
-def tas_de_sable(n):
+def fourmi_de_langton(n):
     '''Fonction intermédiaire pour lancer le programme tas de sable'''
     configuration_courante_vide(n)
-def verif_sable(n):
-    global boucle
-    for ligne in range(n):
-        for colonne in range(n):
-            if config_courante[ligne][colonne] > 3 :
-                boucle = True
-            else:
-                boucle = False
 
 
-def avalanche(n):
-    '''Fonction qui lance l'avalanche'''
-    global boucle
-    for ligne in range(n):
-        for colonne in range(n):
-            if config_courante[ligne][colonne] > 3 and ligne != 1 and ligne != 49 and colonne != 1 and colonne != 49:
-                config_courante[ligne][colonne] -= 4
-                config_courante[ligne - 1 ][colonne] += 1
-                config_courante[ligne + 1 ][colonne] += 1
-                config_courante[ligne][colonne + 1] += 1
-                config_courante[ligne][colonne - 1] += 1
-                maj_grille(n)
-            if config_courante[ligne][colonne] > 3 and ligne == 1 and colonne == 1 :
-                config_courante[ligne][colonne] -= 2
-                config_courante[ligne + 1 ][colonne] += 1
-                config_courante[ligne][colonne + 1 ] += 1
-                maj_grille(n)
-            if config_courante[ligne][colonne] > 3 and ligne == 1 and colonne == 49 :
-                config_courante[ligne][colonne] -= 2
-                config_courante[ligne + 1][colonne] += 1
-                config_courante[ligne][colonne - 1 ] += 1
-                maj_grille(n)
-            if config_courante[ligne][colonne] > 3 and ligne == 49 and colonne == 1 :
-                config_courante[ligne][colonne] -= 2
-                config_courante[ligne - 1 ][colonne] += 1
-                config_courante[ligne][colonne + 1 ] += 1
-                maj_grille(n)
-            if config_courante[ligne][colonne] > 3 and ligne == 49 and colonne == 49 :
-                config_courante[ligne][colonne] -= 2
-                config_courante[ligne - 1][colonne] += 1
-                config_courante[ligne][colonne - 1 ] += 1
-                maj_grille(n)
 
-            if config_courante[ligne][colonne] > 3 and ligne == 1 and colonne != 1 and colonne != 49:
-                config_courante[ligne][colonne] -= 3
-                config_courante[ligne + 1 ][colonne] += 1
-                config_courante[ligne][colonne + 1 ] += 1
-                config_courante[ligne][colonne - 1 ] += 1
-                maj_grille(n)
-            if config_courante[ligne][colonne] > 3 and ligne == 49 and colonne != 1 and colonne != 49:
-                config_courante[ligne][colonne] -= 3
-                config_courante[ligne - 1 ][colonne] += 1
-                config_courante[ligne][colonne + 1 ] += 1
-                config_courante[ligne][colonne - 1 ] += 1
-                maj_grille(n)
-            if config_courante[ligne][colonne] > 3 and colonne == 1 and ligne != 1 and ligne != 49:
-                config_courante[ligne][colonne] -= 3
-                config_courante[ligne + 1 ][colonne] += 1
-                config_courante[ligne - 1 ][colonne] += 1
-                config_courante[ligne][colonne + 1 ] += 1
-                maj_grille(n)
-            if config_courante[ligne][colonne] > 3 and colonne == 1 and ligne != 1 and ligne != 49:
-                config_courante[ligne][colonne] -= 3
-                config_courante[ligne + 1 ][colonne] += 1
-                config_courante[ligne - 1 ][colonne] += 1
-                config_courante[ligne][colonne - 1 ] += 1
-                maj_grille(n)
+
 def configuration_courante_vide(n):
     '''Initialise la configuration conrante vide'''
     global config_courante
@@ -169,7 +106,7 @@ def random_config(n):
 
 # création des widgets
 fenetre = Tk()
-fenetre.title("Projet 1 : Tas de sable")
+fenetre.title("Projet 1 : Fourmi de Langton")
 canevas = Canvas(fenetre, height=HAUTEUR, width=LARGEUR, bg="snow")
 boutton_random_config = Button(fenetre, text="Configuration aléatoire", width=17, height=3, bg="moccasin",
                                fg="black", command=partial(random_config, n))
@@ -181,5 +118,5 @@ boutton_random_config.grid(column=0, row=0, )
 
 
 # boucle principale
-tas_de_sable(n)
+fourmi_de_langton(n)
 fenetre.mainloop()
