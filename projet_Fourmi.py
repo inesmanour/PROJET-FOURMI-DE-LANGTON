@@ -43,6 +43,8 @@ position_tete_fourmi = 0
 # pause 
 var_pause = False
 boutton_pause = 0 
+# vitesse
+vitesse = 1000
 #########################################
 # fonctions
 def fourmi_de_langton(n):
@@ -117,7 +119,13 @@ def haut():
     position_tete_fourmi = haut
     boutton_pause = Button(fenetre, text="Pause", width=18, height=3, bg="white",
                                fg="black", command=pause)
-    boutton_pause.grid(column=4, row=0, padx=10, pady=10)
+    boutton_pause.grid(column=4,columnspan=5, row=0, padx=10, pady=10)
+    boutton_x2 = Button(fenetre, text="Vitesse x2", width=8, height=2, bg="white",
+                               fg="black", command=augmenter_vitesse)                          
+    boutton_x2.grid(column=4, row=1, padx=10, pady=10)
+    boutton_div2 = Button(fenetre, text="Vitesse /2", width=8, height=2, bg="white",
+                               fg="black", command=reduire_vitesse)                          
+    boutton_div2.grid(column=5, row=1, padx=10, pady=10)
     boutton_haut.destroy()
     boutton_bas.destroy()
     boutton_gauche.destroy()
@@ -135,7 +143,13 @@ def bas():
     position_tete_fourmi = bas
     boutton_pause = Button(fenetre, text="Pause", width=18, height=3, bg="white",
                                fg="black", command=pause)                          
-    boutton_pause.grid(column=4, row=0, padx=10, pady=10)
+    boutton_pause.grid(column=4,columnspan=5, row=0, padx=10, pady=10)
+    boutton_x2 = Button(fenetre, text="Vitesse x2", width=8, height=2, bg="white",
+                               fg="black", command=augmenter_vitesse)                          
+    boutton_x2.grid(column=4, row=1, padx=10, pady=10)
+    boutton_div2 = Button(fenetre, text="Vitesse /2", width=8, height=2, bg="white",
+                               fg="black", command=reduire_vitesse)                          
+    boutton_div2.grid(column=5, row=1, padx=10, pady=10)
     boutton_haut.destroy()
     boutton_bas.destroy()
     boutton_gauche.destroy()
@@ -153,7 +167,13 @@ def gauche():
     position_tete_fourmi = gauche
     boutton_pause = Button(fenetre, text="Pause", width=18, height=3, bg="white",
                                fg="black", command=pause)
-    boutton_pause.grid(column=4, row=0, padx=10, pady=10)
+    boutton_pause.grid(column=4, columnspan=5, row=0, padx=10, pady=10)
+    boutton_x2 = Button(fenetre, text="Vitesse x2", width=8, height=2, bg="white",
+                               fg="black", command=augmenter_vitesse)                          
+    boutton_x2.grid(column=4, row=1, padx=10, pady=10)
+    boutton_div2 = Button(fenetre, text="Vitesse /2", width=8, height=2, bg="white",
+                               fg="black", command=reduire_vitesse)                          
+    boutton_div2.grid(column=5, row=1, padx=10, pady=10)
     boutton_haut.destroy()
     boutton_bas.destroy()
     boutton_gauche.destroy()
@@ -171,7 +191,13 @@ def droite():
     position_tete_fourmi = droite
     boutton_pause = Button(fenetre, text="Pause", width=18, height=3, bg="white",
                                fg="black", command=pause)
-    boutton_pause.grid(column=4, row=0, padx=10, pady=10)
+    boutton_pause.grid(column=4,columnspan=5, row=0, padx=10, pady=10)
+    boutton_x2 = Button(fenetre, text="Vitesse x2", width=8, height=2, bg="white",
+                               fg="black", command=augmenter_vitesse)                          
+    boutton_x2.grid(column=4, row=1, padx=10, pady=10)
+    boutton_div2 = Button(fenetre, text="Vitesse /2", width=8, height=2, bg="white",
+                               fg="black", command=reduire_vitesse)                          
+    boutton_div2.grid(column=5, row=1, padx=10, pady=10)
     boutton_haut.destroy()
     boutton_bas.destroy()
     boutton_gauche.destroy()
@@ -185,8 +211,8 @@ def droite():
     deplacement()
 
 def deplacement():
-    global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, launch
-    launch = canevas.after(200, deplacement)
+    global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, launch, vitesse
+    launch = canevas.after(vitesse, deplacement)
     if position_tete_fourmi == haut:
         y_fourmi -= 1
         tore()
@@ -242,13 +268,13 @@ def deplacement():
 
 
 def pause():
-    global launch, var_pause, boutton_pause
+    global launch, var_pause, boutton_pause, vitesse
     var_pause = not var_pause
     if var_pause == True :
         canevas.after_cancel(launch)
         boutton_pause.config(text="Démarrer")
     else:
-        launch = canevas.after(500, deplacement)  
+        launch = canevas.after(vitesse, deplacement)  
         boutton_pause.config(text="Pause")
 
 
@@ -266,7 +292,14 @@ def tore():
     elif y_fourmi < 0:
         y_fourmi = n-1
         return
-    
+
+def reduire_vitesse() :
+    global vitesse
+    vitesse = vitesse * 2  
+
+def augmenter_vitesse() :
+    global vitesse
+    vitesse = vitesse // 2  
 
 #########################################
 # partie principale
