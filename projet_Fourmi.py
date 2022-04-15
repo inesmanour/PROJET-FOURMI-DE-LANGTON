@@ -10,12 +10,13 @@
 #########################################
 # import des librairies
 
-from distutils.command.config import config
-from glob import glob
+
+from cProfile import label
+from textwrap import fill
 from tkinter import *
 from random import *
 from functools import partial
-from winreg import REG_OPENED_EXISTING_KEY
+
 
 #########################################
 # constantes
@@ -24,8 +25,7 @@ from winreg import REG_OPENED_EXISTING_KEY
 HAUTEUR = 600
 # largeur du canevas
 LARGEUR = 600
-# boucle avalanche
-boucle = False
+
 #########################################
 # variables globales
 
@@ -35,8 +35,14 @@ cases = []
 n = 50
 # configuration du canevas stockée dans une liste a deux dimensions
 config_courante = []
-
-
+# placement de la fourmi 
+x_fourmi = 0 
+y_fourmi = 0 
+# position de la tête 
+position_tete_fourmi = 0 
+# pause 
+var_pause = False
+boutton_pause = 0 
 #########################################
 # fonctions
 def fourmi_de_langton(n):
@@ -76,30 +82,170 @@ def maj_grille(n):
     for ligne in range(n):
         for colonne in range(n):
             if config_courante[ligne][colonne] == 0:
-                canevas.itemconfigure(cases[ligne][colonne], fill='black', outline='grey')  # noir pour 0 grain
-
-
-            elif config_courante[ligne][colonne] == 1:
-                canevas.itemconfigure(cases[ligne][colonne], fill='white', outline='grey')  # blanc pour 1 grain
+                canevas.itemconfigure(cases[ligne][colonne], fill='white', )  # white pour 0 grain
+            if config_courante[ligne][colonne] == 1:
+                canevas.itemconfigure(cases[ligne][colonne], fill='black', )  # noir pour 1 grain
 
 
 
 
-def random_config(n):
+def placement_fourmi():
     ''' Fonction qui initialise une configuration aléatoire : ajoute entre 0 et n grains de sable à chaque case'''
-    global config_courante
-    for ligne in range(n):
-        for colonne in range(n):
-            config_courante[ligne][colonne] = randint(0, 1)  # il faut écraser la variable et pas l'additionner !!!
+    global config_courante, n, x_fourmi, y_fourmi, boutton_bas, boutton_droite, boutton_gauche, boutton_haut, texte_tete
+    x_fourmi = randint(0,n)
+    y_fourmi = randint(0,n)
+    config_courante[y_fourmi][x_fourmi] += 1 
+    boutton_creer_fourmi.destroy()
+    boutton_haut = Button(fenetre, text="Haut", width=8, height=3, bg="white",
+                               fg="black", command=partial(haut))
+    boutton_bas = Button(fenetre, text="Bas", width=8, height=3, bg="white",
+                               fg="black", command=partial(bas))
+    boutton_gauche = Button(fenetre, text="Gauche", width=8, height=3, bg="white",
+                               fg="black", command=partial(gauche))
+    boutton_droite = Button(fenetre, text="Droite", width=8, height=3, bg="white",
+                               fg="black", command=partial(droite))
+    texte_tete = Label(fenetre, text='Dirigez la tête')
+    boutton_haut.grid(column=4, row=1, padx=10, pady=10)
+    boutton_bas.grid(column=4, row=3, padx=10, pady=10)
+    boutton_gauche.grid(column=3, row=2, padx=10, pady=10)
+    boutton_droite.grid(column=5, row=2, padx=10, pady=10)
+    texte_tete.grid(column=4, row=2)
     maj_grille(n)
 
+def haut():
+    global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, boutton_pause
+    position_tete_fourmi = haut
+    boutton_pause = Button(fenetre, text="Pause", width=18, height=3, bg="white",
+                               fg="black", command=pause)
+    boutton_pause.grid(column=4, row=0, padx=10, pady=10)
+    boutton_haut.destroy()
+    boutton_bas.destroy()
+    boutton_gauche.destroy()
+    boutton_droite.destroy()
+    texte_tete.destroy()
+    texte_haut = Label(fenetre, text='La tête a commencé en haut')
+    texte_haut.grid(column=0, row=0, padx=10, pady=10)
+    if config_courante[y_fourmi][x_fourmi] == 0:
+        config_courante[y_fourmi][x_fourmi] += 1 
+    maj_grille(n)
+    deplacement()
+
+def bas():
+    global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, boutton_pause
+    position_tete_fourmi = bas
+    boutton_pause = Button(fenetre, text="Pause", width=18, height=3, bg="white",
+                               fg="black", command=pause)                          
+    boutton_pause.grid(column=4, row=0, padx=10, pady=10)
+    boutton_haut.destroy()
+    boutton_bas.destroy()
+    boutton_gauche.destroy()
+    boutton_droite.destroy()
+    texte_tete.destroy()
+    texte_bas = Label(fenetre, text='La tête a commencé en bas')
+    texte_bas.grid(column=0, row=0, padx=10, pady=10)
+    if config_courante[y_fourmi][x_fourmi] == 0:
+        config_courante[y_fourmi][x_fourmi] += 1 
+    maj_grille(n)
+    deplacement()
+
+def gauche():
+    global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, boutton_pause
+    position_tete_fourmi = gauche
+    boutton_pause = Button(fenetre, text="Pause", width=18, height=3, bg="white",
+                               fg="black", command=pause)
+    boutton_pause.grid(column=4, row=0, padx=10, pady=10)
+    boutton_haut.destroy()
+    boutton_bas.destroy()
+    boutton_gauche.destroy()
+    boutton_droite.destroy()
+    texte_tete.destroy()
+    texte_gauche = Label(fenetre, text='La tête a commencé à gauche')
+    texte_gauche.grid(column=0, row=0, padx=10, pady=10)
+    if config_courante[y_fourmi][x_fourmi] == 0:
+        config_courante[y_fourmi][x_fourmi] += 1 
+    maj_grille(n)
+    deplacement()
+
+def droite():
+    global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, boutton_pause
+    position_tete_fourmi = droite
+    boutton_pause = Button(fenetre, text="Pause", width=18, height=3, bg="white",
+                               fg="black", command=pause)
+    boutton_pause.grid(column=4, row=0, padx=10, pady=10)
+    boutton_haut.destroy()
+    boutton_bas.destroy()
+    boutton_gauche.destroy()
+    boutton_droite.destroy()
+    texte_tete.destroy()
+    texte_droite = Label(fenetre, text='La tête a commencé à droite')
+    texte_droite.grid(column=0, row=0, padx=10, pady=10)
+    if config_courante[y_fourmi][x_fourmi] == 0:
+        config_courante[y_fourmi][x_fourmi] += 1 
+    maj_grille(n)
+    deplacement()
+
+def deplacement():
+    global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, launch
+    launch = canevas.after(10, deplacement)
+    if position_tete_fourmi == haut:
+        y_fourmi -= 1
+        if config_courante[y_fourmi][x_fourmi] == 0:
+            config_courante[y_fourmi][x_fourmi] += 1
+            position_tete_fourmi = droite
+            maj_grille(n)
+            return
+        elif config_courante[y_fourmi][x_fourmi] == 1:
+            config_courante[y_fourmi][x_fourmi] -= 1
+            position_tete_fourmi = gauche
+            maj_grille(n)
+            return
+    elif position_tete_fourmi == bas:
+        y_fourmi += 1
+        if config_courante[y_fourmi][x_fourmi] == 0:
+            config_courante[y_fourmi][x_fourmi] += 1
+            position_tete_fourmi = gauche
+            maj_grille(n)
+            return
+        elif config_courante[y_fourmi][x_fourmi] == 1:
+            config_courante[y_fourmi][x_fourmi] -= 1
+            position_tete_fourmi = droite
+            maj_grille(n)
+            return
+    elif position_tete_fourmi == droite:
+        x_fourmi += 1
+        if config_courante[y_fourmi][x_fourmi] == 0:
+            config_courante[y_fourmi][x_fourmi] += 1
+            position_tete_fourmi = bas
+            maj_grille(n)
+            return
+        elif config_courante[y_fourmi][x_fourmi] == 1:
+            config_courante[y_fourmi][x_fourmi] -= 1
+            position_tete_fourmi = haut   
+            maj_grille(n)
+            return     
+    elif position_tete_fourmi == gauche:
+        x_fourmi -= 1
+        if config_courante[y_fourmi][x_fourmi] == 0:
+            config_courante[y_fourmi][x_fourmi] += 1
+            position_tete_fourmi = haut
+            maj_grille(n)
+            return
+        elif config_courante[y_fourmi][x_fourmi] == 1:
+            config_courante[y_fourmi][x_fourmi] -= 1
+            position_tete_fourmi = bas
+            maj_grille(n)
+            return 
 
 
-
-
-
-
-
+def pause():
+    global launch, var_pause, boutton_pause
+    var_pause = not var_pause
+    if var_pause == True :
+        canevas.after_cancel(launch)
+        boutton_pause.config(text="Démarrer")
+    else:
+        launch = canevas.after(500, deplacement)  
+        boutton_pause.config(text="Pause")
 #########################################
 # partie principale
 
@@ -108,14 +254,12 @@ def random_config(n):
 fenetre = Tk()
 fenetre.title("Projet 1 : Fourmi de Langton")
 canevas = Canvas(fenetre, height=HAUTEUR, width=LARGEUR, bg="snow")
-boutton_random_config = Button(fenetre, text="Configuration aléatoire", width=17, height=3, bg="moccasin",
-                               fg="black", command=partial(random_config, n))
-
+boutton_creer_fourmi = Button(fenetre, text="Créer fourmi ", width=18, height=3, bg="white",
+                               fg="black", command=partial(placement_fourmi))
 
 # placement des widgets
-canevas.grid(column=1, row=0, columnspan=2, rowspan=5, padx=3, pady=3)
-boutton_random_config.grid(column=0, row=0, )
-
+canevas.grid(column=1, row=0, columnspan=2, rowspan=5)
+boutton_creer_fourmi.grid(column=0, row=0, padx=10, pady=10)
 
 # boucle principale
 fourmi_de_langton(n)
