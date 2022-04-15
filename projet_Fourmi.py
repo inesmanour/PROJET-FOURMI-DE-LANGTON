@@ -126,6 +126,9 @@ def haut():
     boutton_div2 = Button(fenetre, text="Vitesse /2", width=8, height=2, bg="white",
                                fg="black", command=reduire_vitesse)                          
     boutton_div2.grid(column=5, row=1, padx=10, pady=10)
+    boutton_avance = Button(fenetre, text="Next", width=8, height=2, bg="white",
+                               fg="black", command=deplacement_une_fois)                          
+    boutton_avance.grid(column=5, row=2, padx=10, pady=10)
     boutton_haut.destroy()
     boutton_bas.destroy()
     boutton_gauche.destroy()
@@ -150,6 +153,9 @@ def bas():
     boutton_div2 = Button(fenetre, text="Vitesse /2", width=8, height=2, bg="white",
                                fg="black", command=reduire_vitesse)                          
     boutton_div2.grid(column=5, row=1, padx=10, pady=10)
+    boutton_avance = Button(fenetre, text="Next", width=8, height=2, bg="white",
+                               fg="black", command=deplacement_une_fois)                          
+    boutton_avance.grid(column=5, row=2, padx=10, pady=10)
     boutton_haut.destroy()
     boutton_bas.destroy()
     boutton_gauche.destroy()
@@ -174,6 +180,9 @@ def gauche():
     boutton_div2 = Button(fenetre, text="Vitesse /2", width=8, height=2, bg="white",
                                fg="black", command=reduire_vitesse)                          
     boutton_div2.grid(column=5, row=1, padx=10, pady=10)
+    boutton_avance = Button(fenetre, text="Next", width=8, height=2, bg="white",
+                               fg="black", command=deplacement_une_fois)                          
+    boutton_avance.grid(column=5, row=2, padx=10, pady=10)
     boutton_haut.destroy()
     boutton_bas.destroy()
     boutton_gauche.destroy()
@@ -198,6 +207,9 @@ def droite():
     boutton_div2 = Button(fenetre, text="Vitesse /2", width=8, height=2, bg="white",
                                fg="black", command=reduire_vitesse)                          
     boutton_div2.grid(column=5, row=1, padx=10, pady=10)
+    boutton_avance = Button(fenetre, text="Next", width=8, height=2, bg="white",
+                               fg="black", command=deplacement_une_fois)                          
+    boutton_avance.grid(column=5, row=2, padx=10, pady=10)
     boutton_haut.destroy()
     boutton_bas.destroy()
     boutton_gauche.destroy()
@@ -266,7 +278,62 @@ def deplacement():
             maj_grille(n)
             return 
 
+def deplacement_une_fois():
+    global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, launch, vitesse
+    if position_tete_fourmi == haut:
+        y_fourmi -= 1
+        tore()
+        if config_courante[y_fourmi][x_fourmi] == 0:
+            config_courante[y_fourmi][x_fourmi] += 1
+            position_tete_fourmi = droite
+            maj_grille(n)
+            return
+        elif config_courante[y_fourmi][x_fourmi] == 1:
+            config_courante[y_fourmi][x_fourmi] -= 1
+            position_tete_fourmi = gauche
+            maj_grille(n)
+            return
+    elif position_tete_fourmi == bas:
+        y_fourmi += 1
+        tore()
+        if config_courante[y_fourmi][x_fourmi] == 0:
+            config_courante[y_fourmi][x_fourmi] += 1
+            position_tete_fourmi = gauche
+            maj_grille(n)
+            return
+        elif config_courante[y_fourmi][x_fourmi] == 1:
+            config_courante[y_fourmi][x_fourmi] -= 1
+            position_tete_fourmi = droite
+            maj_grille(n)
+            return
+    elif position_tete_fourmi == droite:
+        x_fourmi += 1
+        tore()
+        if config_courante[y_fourmi][x_fourmi] == 0:
+            config_courante[y_fourmi][x_fourmi] += 1
+            position_tete_fourmi = bas
+            maj_grille(n)
+            return
+        elif config_courante[y_fourmi][x_fourmi] == 1:
+            config_courante[y_fourmi][x_fourmi] -= 1
+            position_tete_fourmi = haut   
+            maj_grille(n)
+            return     
+    elif position_tete_fourmi == gauche:
+        x_fourmi -= 1
+        tore()
+        if config_courante[y_fourmi][x_fourmi] == 0:
+            config_courante[y_fourmi][x_fourmi] += 1
+            position_tete_fourmi = haut
+            maj_grille(n)
+            return
+        elif config_courante[y_fourmi][x_fourmi] == 1:
+            config_courante[y_fourmi][x_fourmi] -= 1
+            position_tete_fourmi = bas
+            maj_grille(n)
+            return 
 
+        
 def pause():
     global launch, var_pause, boutton_pause, vitesse
     var_pause = not var_pause
