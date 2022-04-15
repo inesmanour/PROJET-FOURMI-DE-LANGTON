@@ -93,7 +93,7 @@ def placement_fourmi():
     ''' Fonction qui initialise une configuration aléatoire : ajoute entre 0 et n grains de sable à chaque case'''
     global config_courante, n, x_fourmi, y_fourmi, boutton_bas, boutton_droite, boutton_gauche, boutton_haut, texte_tete
     x_fourmi = randint(0,n)
-    y_fourmi = randint(0,n)
+    y_fourmi = 0
     config_courante[y_fourmi][x_fourmi] += 1 
     boutton_creer_fourmi.destroy()
     boutton_haut = Button(fenetre, text="Haut", width=8, height=3, bg="white",
@@ -186,7 +186,7 @@ def droite():
 
 def deplacement():
     global x_fourmi, y_fourmi, config_courante, position_tete_fourmi, launch
-    launch = canevas.after(25, deplacement)
+    launch = canevas.after(200, deplacement)
     if position_tete_fourmi == haut:
         y_fourmi -= 1
         tore()
@@ -254,14 +254,18 @@ def pause():
 
 def tore():
     global x_fourmi, y_fourmi, n
-    if x_fourmi > n:
-        x_fourmi == 0 
-    if x_fourmi < 0:
-        x_fourmi == n
-    if y_fourmi > n:
-        y_fourmi == 0 
-    if y_fourmi < 0:
-        y_fourmi == n 
+    if x_fourmi > n-1:
+        x_fourmi = 0 
+        return
+    elif x_fourmi < 0:
+        x_fourmi = n-1
+        return
+    elif y_fourmi > n-1:
+        y_fourmi = 0 
+        return
+    elif y_fourmi < 0:
+        y_fourmi = n-1
+        return
     
 
 #########################################
