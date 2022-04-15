@@ -92,8 +92,8 @@ def maj_grille(n):
 def placement_fourmi():
     ''' Fonction qui initialise une configuration aléatoire : ajoute entre 0 et n grains de sable à chaque case'''
     global config_courante, n, x_fourmi, y_fourmi, boutton_bas, boutton_droite, boutton_gauche, boutton_haut, texte_tete
-    x_fourmi = randint(0,n)
-    y_fourmi = 0
+    x_fourmi = randint(0,n-1)
+    y_fourmi = randint(0,n-1)
     config_courante[y_fourmi][x_fourmi] += 1 
     boutton_creer_fourmi.destroy()
     boutton_haut = Button(fenetre, text="Haut", width=8, height=3, bg="white",
