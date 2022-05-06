@@ -335,7 +335,7 @@ txt_orientation = Label(text="Choisir l'orientation\n de la fourmi :", font=font
 txt_informatif = Label(text="", font=font_base, width=15, height=3, bg="darkSeaGreen1", fg="forest green", padx=15)
 
 #Scale pour la vitesse
-scale_vitesse = Scale(fenetre, orient='horizontal', from_=0, to=500, tickinterval=100, length=400, label='Vitesse')
+scale_vitesse = Scale(fenetre, orient='horizontal', from_=0, to=500, tickinterval=100, length=400, label='Temps d\'execution (ms)')
 
 ##Placement des widgets
 
