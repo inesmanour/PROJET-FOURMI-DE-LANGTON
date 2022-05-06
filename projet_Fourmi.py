@@ -287,8 +287,12 @@ def retour(): #ENCORE EN PHASE DE DVPT
             variable_orientation = "droite"
     maj_grille()
 
+def fermer_fenetre():
+    fenetre.destroy()
+
 #########################################
-###PARTIE PRINCIPALE
+### PARTIE PRINCIPALE
+#########################################
 
 ##Creation des Widgets
 fenetre = Tk()
@@ -330,6 +334,9 @@ bouton_load = Button(fenetre, text="Load", font=font_base, width=10, height=3, c
     #Bouton retour
 bouton_retour = Button(fenetre, text="Retourne", font=font_base, width=10, height=3, command=retour)
 
+    #Bouton quitter
+bouton_quitter = Button(fenetre, text="Quitter", font=font_base, width=10, height=3, command=fermer_fenetre)
+
 #Labels
 txt_orientation = Label(text="Choisir l'orientation\n de la fourmi :", font=font_base, width=15, height=3, bg="darkSeaGreen1", fg="forest green", padx=15)
 txt_informatif = Label(text="", font=font_base, width=15, height=3, bg="darkSeaGreen1", fg="forest green", padx=15)
@@ -370,6 +377,9 @@ bouton_load.grid(column=10, row=2, padx=5)
 
     #Bouton retour
 bouton_retour.grid(column=10, row=3, padx=5)
+
+    #Bouton quitter
+bouton_quitter.grid(column=10, row=3, padx=5)
 
 #Placement des labels
 
