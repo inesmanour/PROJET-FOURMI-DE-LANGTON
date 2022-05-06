@@ -310,10 +310,10 @@ bouton_next = Button(fenetre, text="Next", font=font_base, width=10, height=3, c
 bouton_pause = Button(fenetre, text="Pause", font=font_base, width=10, height=3, command=pause)
 
     #Chargement des images pour les boutons fleches
-im_haut = PhotoImage(file = r"C:\Users\Laura.DESKTOP-OMQOELF\Documents\cours\Université\in200\Projet fourmi\fleche_haut.png")
-im_bas = PhotoImage(file = r"C:\Users\Laura.DESKTOP-OMQOELF\Documents\cours\Université\in200\Projet fourmi\fleche_bas.png")
-im_droite = PhotoImage(file = r"C:\Users\Laura.DESKTOP-OMQOELF\Documents\cours\Université\in200\Projet fourmi\fleche_droite.png")
-im_gauche = PhotoImage(file = r"C:\Users\Laura.DESKTOP-OMQOELF\Documents\cours\Université\in200\Projet fourmi\fleche_gauche.png")
+im_haut = PhotoImage(file = r"C:\Users\Laura.DESKTOP-OMQOELF\Documents\cours\Université\in200\Projet fourmi\PROJET-FOURMI-DE-LANGTON\fleche_haut.png")
+im_bas = PhotoImage(file = r"C:\Users\Laura.DESKTOP-OMQOELF\Documents\cours\Université\in200\Projet fourmi\PROJET-FOURMI-DE-LANGTON\fleche_bas.png")
+im_droite = PhotoImage(file = r"C:\Users\Laura.DESKTOP-OMQOELF\Documents\cours\Université\in200\Projet fourmi\PROJET-FOURMI-DE-LANGTON\fleche_droite.png")
+im_gauche = PhotoImage(file = r"C:\Users\Laura.DESKTOP-OMQOELF\Documents\cours\Université\in200\Projet fourmi\PROJET-FOURMI-DE-LANGTON\fleche_gauche.png")
 
     #Bouton fleches
 bouton_haut = Button(fenetre, image = im_haut, borderwidth=3, command= lambda : orientation_fourmi("haut"))
