@@ -312,38 +312,39 @@ def load():
     fic.close()
     return maj_grille()                     #On met a jour la grille avec la nouvelle configuration courante
 
-def retour(): #ENCORE EN PHASE DE DVPT
+def retour(): #ENCORE EN DVPT
     '''Fonction qui permet de revenir d'une etape en arriere'''
-    global config_courante, x_fourmi, y_fourmi
+    global config_courante, x_fourmi, y_fourmi, variable_orientation
 
     if config_courante[y_fourmi][x_fourmi] == 1 : #si c'est noir
         config_courante[y_fourmi][x_fourmi] = 0 #on remet la case en blanc
         if variable_orientation == "gauche":
             y_fourmi -= 1
             variable_orientation = "bas"
-        if variable_orientation == "droite":
+        elif variable_orientation == "droite":
             y_fourmi += 1
-            variable_orientation = "bas"
-        if variable_orientation == "haut":
+            variable_orientation = "haut"
+        elif variable_orientation == "haut":
             x_fourmi += 1
             variable_orientation = "gauche"
-        if variable_orientation == "droite":
+        elif variable_orientation == "bas":
             x_fourmi -= 1
-            variable_orientation = "droite"
+            variable_orientation = "droite "
     else :
         config_courante[y_fourmi][x_fourmi] = 1 #on remet la case en noir
         if variable_orientation == "gauche":
             y_fourmi += 1
-            variable_orientation = "bas"
-        if variable_orientation == "droite":
+            variable_orientation = "haut"
+        elif variable_orientation == "droite":
             y_fourmi -= 1
             variable_orientation = "bas"
-        if variable_orientation == "haut":
+        elif variable_orientation == "haut":
             x_fourmi -= 1
-            variable_orientation = "gauche"
-        if variable_orientation == "bas":
-            x_fourmi += 1
             variable_orientation = "droite"
+        elif variable_orientation == "bas":
+            x_fourmi += 1
+            variable_orientation = "gauche"
+    
     maj_grille()
 
 def fermer_fenetre():
@@ -397,7 +398,7 @@ bouton_save = Button(fenetre, text="Sauvegarde", font=font_base, width=10, heigh
 bouton_load = Button(fenetre, text="Load", font=font_base, width=10, height=3, command=load)
 
     #Bouton retour
-bouton_retour = Button(fenetre, text="Retourne", font=font_base, width=10, height=3, command=retour)
+bouton_retour = Button(fenetre, text="Retour", font=font_base, width=10, height=3, command=retour)
 
     #Bouton quitter
 bouton_quitter = Button(fenetre, text="Quitter", font=font_base, width=10, height=3, command=fermer_fenetre)
@@ -441,7 +442,7 @@ bouton_save.grid(column=10, row=1, padx=5)
 bouton_load.grid(column=10, row=2, padx=5)
 
     #Bouton retour
-bouton_retour.grid(column=10, row=3, padx=5)
+bouton_retour.grid(column=10, row=0, padx=5)
 
     #Bouton quitter
 bouton_quitter.grid(column=10, row=3, padx=5)
