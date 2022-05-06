@@ -1,37 +1,59 @@
-# Créé par Laura, le 29/04/2022 en Python 3.7
+#########################################
+# Projet 2 : Fourmi de Langton
+#
+# LAURA LEFEVRE
+# ADAM KEDDIS
+# MANOUR INES
+# LDDBI
+#########################################
+
+#########################################
+## IMPORT DES LIBRAIRIES
+#########################################
+
 from tkinter import *
 from random import randint
 from tkinter.font import Font
 
-# hauteur du canevas
-HAUTEUR = 600
-# largeur du canevas
-LARGEUR = 600
 
 #########################################
-# VARIABLES GLOBALES
+## VARIABLES GLOBALES
+#########################################
+
+#Hauteur du canevas
+HAUTEUR = 600
+#Largeur du canevas
+LARGEUR = 600
 
 #Cases de la grille
 cases = []
 
-#constante de proportionnalité
+#Constante de proportionnalité (nombre de cases du plateau de jeu)
 n = 30
 
-#configuration du canevas stockée dans une liste a deux dimensions
+#Configuration du canevas stockée dans une liste a deux dimensions
 config_courante = []
 
-#position et orientation de la fourmie
+#Variables de position et d'orientation de la fourmie
 x_fourmi = 0
 y_fourmi = 0
 variable_orientation = ""
 
-
-#Variable pour gerer le temps
+#Variable pour mettre en pause l'automate
 var_pause = False
+#Variable permettant l'execution automatique ou permettant les etapes une a une
+auto = False
 
 
 def jeu_Fourmi():
     '''Fonction intermédiaire permettant le lancement du jeu'''
+    
+    widget_a_cacher()   #Appel pour cacher les boutons non utilses au lancement du programme
+    configuration_courante_vide()
+
+def widget_a_cacher():
+    '''Fonction permettant de cacher les boutons non utilises au lancement du programme'''
+    
     hide(bouton_haut, True)
     hide(bouton_bas, True)
     hide(bouton_droit, True)
@@ -45,82 +67,89 @@ def jeu_Fourmi():
     hide(bouton_save, True)
     hide(bouton_load, True)
     hide(bouton_retour, True)
-    configuration_courante_vide()
 
 def configuration_courante_vide():
-    '''Initialise la configuration conrante vide du jeu '''
-    global config_courante, n
+    '''Initialise la configuration conrante vide du jeu'''
+    global config_courante
 
-    for i in range(n):
-        config_courante.append([0 for x in range(1, n+1)])
+    for i in range(n):     #modifie la config_courante de sorte a avoir une liste imbrique de taille n
+        config_courante.append([0 for x in range(n)])
 
-    return init_grille()
+    return init_grille()   #permet de lance l'initialisation de la grille proportionnellement a la taille de config_courante
 
 def init_grille():
-    '''Fonctions qui permet la création d'une grille'''
+    '''Fonctions qui permet l'initialisation de la grille'''
     global cases
 
-    c = HAUTEUR / n
+    c = HAUTEUR / n  #calcul du nombre de cases dans la grille proportionnellement a n
     for ligne in range(n):
         transit = []
-        for colonne in range(n):
+        for colonne in range(n): #creation des cases
             transit.append(canevas.create_rectangle(colonne * c + 2, ligne * c + 2, (colonne + 1) * c + 2, (ligne + 1) * c + 2, fill="snow", outline="darkSeaGreen1"))
         cases.append(transit)
 
 def maj_grille():
     '''Fonction qui met à jour la grille en fonction de la configuration courante au sein du jeu'''
+    
     for ligne in range(n):
         for colonne in range(n):
-            if config_courante[ligne][colonne] == 0:
-                canevas.itemconfigure(cases[ligne][colonne], fill='snow')   #Changement de la couleur de la case en blanc
-            if config_courante[ligne][colonne] == 1:
+            if config_courante[ligne][colonne] == 0:                        #0 represente une case blanche
+                canevas.itemconfigure(cases[ligne][colonne], fill='snow')   #Changement de la couleur de la case en noir
+            if config_courante[ligne][colonne] == 1:                        #1 represente une case noire
                 canevas.itemconfigure(cases[ligne][colonne], fill='black')  #Changement de la couleur de la case en noir
 
 def creation_fourmi():
     '''Fonction permettant le placement aléatoire d'une fourmi et pour aller plus loin, permet de choisir l'orientation de la fourmi'''
     global config_courante, x_fourmi, y_fourmi
 
-    x_fourmi = randint(0,n-1)
+    #on determine des coordonnees aleatoires pour la fourmi
+    x_fourmi = randint(0,n-1) 
     y_fourmi = randint(0,n-1)
 
+    #on modifie la configuration courante pour afficher la position de la fourmi et on l'affiche en mettant a jour la grille
     config_courante[y_fourmi][x_fourmi] += 1
-    
-    bouton_creer_fourmi.destroy()
-
-    affiche_fleches()
     maj_grille()
 
-def hide(widget, v):
+    #On cache le bouton permettant la creation d'une fourmi
+    hide(bouton_creer_fourmi, True)
+
+    #On appelle la fonction affiche_fleche pour permettre a l'utilisateur de choisir l'orientation de la fourmi
+    affiche_fleches()
+
+def hide(widget, presence:bool):
     '''Fonction permettant de cacher ou d'afficher un widget'''
-    if v == True :
+
+    if presence == True : #Si le widget est present, on le cache avec la methode .grid_remove() qui permet de garder en memoire les options de grilles
         widget.grid_remove()
     else :
-        widget.grid()
+        widget.grid()     #Sinon, on affiche le widget en utilisant la methode simple .grid()
 
 def affiche_fleches():
     '''Fonction permettant de d'afficher les flèches avec le label attribué pour choisir l'orientation de la fourmi'''
+
     hide(txt_orientation, False)
     hide(bouton_haut, False)
     hide(bouton_bas, False)
     hide(bouton_droit, False)
     hide(bouton_gauche, False)
 
-def changement_txt(label, txt_modif:str):
-    '''Fonction permettant de changer le texte d'un label'''
-    label.configure(text=txt_modif) 
-
-def orientation_fourmi(direction:str):
-    '''Fonction permettant d'attribuer l'orientation choisi par l'utilisateur à la fourmi'''
-    global variable_orientation
+def cache_fleche():
+    '''Fonction permettant de cacher les boutons fleches et le label associe'''
     
-    #On cache les boutons des fleches et le label associé après la sélection de l'orientation
     hide(bouton_haut, True)
     hide(bouton_bas, True)
     hide(bouton_droit, True)
     hide(bouton_gauche, True)
     hide(txt_orientation, True)
 
-    #On affiche les boutons necessaires a la suite du jeu
+def changement_txt(label, txt_modif:str):
+    '''Fonction permettant de changer le texte d'un label'''
+
+    label.configure(text=txt_modif) 
+
+def widget_a_afficher():
+    '''Fonction permettant d'afficher les boutons du jeu'''
+
     hide(txt_informatif, False)
     hide(bouton_next, False)
     hide(bouton_play, False)
@@ -130,7 +159,17 @@ def orientation_fourmi(direction:str):
     hide(bouton_load, False)
     hide(bouton_retour, False)
 
-    #appelle la fonction changement_txt en fonction de l'orientation choisie par l'utilisateur
+def orientation_fourmi(direction:str):
+    '''Fonction permettant d'attribuer l'orientation choisi par l'utilisateur à la fourmi'''
+    global variable_orientation
+    
+    #On cache les boutons fleches et le label associé après la sélection de l'orientation
+    cache_fleche()
+
+    #On affiche les boutons necessaires a la suite du jeu
+    widget_a_afficher()
+
+    #On appelle la fonction changement_txt en fonction de l'orientation choisie par l'utilisateur et on modifie la variable de l'orientation de la fourmi
     if direction == "haut":
         changement_txt(txt_informatif, "La fourmi démarre\n par le haut")
         variable_orientation = "haut"
@@ -144,23 +183,20 @@ def orientation_fourmi(direction:str):
         changement_txt(txt_informatif, "La fourmi démarre\n par la gauche")
         variable_orientation = "gauche"
 
-    return
-
-def deplacement(x:str):
+def deplacement():
     ''' Fonction permettant le déplacement de la fourmi en fonction du choix de l'orientation par l'utilisateur'''
-    global x_fourmi, y_fourmi, config_courante, variable_orientation, vitesse, scale_vitesse
-    
-    
-    if var_pause == False :
+    global x_fourmi, y_fourmi, config_courante, variable_orientation
+        
+    if var_pause == False :     #Si la variable pause n'est pas en position False, le deplacement peut s'effectuer
         if variable_orientation == "haut":
             y_fourmi -= 1
-            verif_coordonnee()
-            if config_courante[y_fourmi][x_fourmi] == 0:
-                config_courante[y_fourmi][x_fourmi] += 1
-                variable_orientation = "droite"
+            verif_coordonnee()  #On verifie les coordonnees pour savoir si la fourmi est a proximite d'un cote
+            if config_courante[y_fourmi][x_fourmi] == 0:    #Si on est sur une case blanche
+                variable_orientation = "droite"             #On change l'orientation
+                config_courante[y_fourmi][x_fourmi] += 1    #On change la couleur en noir
             else:
-                config_courante[y_fourmi][x_fourmi] -= 1
-                variable_orientation = "gauche"
+                config_courante[y_fourmi][x_fourmi] -= 1    #Sinon, la case est noir, on change la couleur en blanc
+                variable_orientation = "gauche"             #On change l'orientation
                 
         elif variable_orientation == "bas":
             y_fourmi += 1
@@ -191,67 +227,90 @@ def deplacement(x:str):
             else :
                 config_courante[y_fourmi][x_fourmi] -= 1
                 variable_orientation = "bas"
-        maj_grille()
-        if x == "automate":
-            canevas.after(scale_vitesse.get(), lambda:deplacement("automate"))
-    return 
+        
+        maj_grille()    #On met a jour la grille pour prendre en compte les deplacement
+
+        if auto == True:      #Si la variable automate est en position True, cela signifie que l'automate doit etre actif
+            #On rappelle la fonction deplacement de maniere automatique en prenant en compte la vitesse recuperee par le scale
+            canevas.after(scale_vitesse.get(), deplacement)
 
 def verif_coordonnee():
     '''Fonction permettant de modifier les coordonnees si la fourmi doit changer de cote'''
     global x_fourmi, y_fourmi
 
-    if y_fourmi < 0: 
+    if y_fourmi < 0:        #Si la coordonnee y est inferieur a 0, alors la fourmi passe en bas 
             y_fourmi = n-1
 
-    if y_fourmi > n-1:
+    if y_fourmi > n-1:      #Si la coordonnee y est superieur a n-1, alors la fourmi passe en haut 
             y_fourmi = 0
 
-    if x_fourmi > n-1:
+    if x_fourmi > n-1:      #Si la coordonnee x est superieur a n-1, alors la fourmi passe a gauche 
             x_fourmi = 0
 
-    if x_fourmi < 0:
+    if x_fourmi < 0:        #Si la coordonnee x est inferieur a 0, alors la fourmi passe a droite
             x_fourmi = n-1
 
 def automate():
-    '''Fonction activant l'automate'''
-    global var_pause
+    '''Fonction activant l'automate du jeu'''
+    global var_pause, auto
+
+    #On modifie la variable pause en False pour activer le deplacement automatique
     var_pause = False
-    deplacement("automate")
+    auto = True  
+    deplacement()
 
 def pause():
     '''Fonction permettant d'arreter l'automate'''
-    global var_pause
+    global var_pause, auto
 
+    #On modifie la variable pause en True pour dire que l'automate doit se mettre en pause
     var_pause = True
 
+def next():
+    '''Fonction permettant de passer les etapes une a une'''
+    global auto, var_pause
+
+    var_pause = False
+    auto = False
+    deplacement()
+
 def save():
-    '''Sauvegarde la partie en cours'''
+    '''Fonction permettant de sauvegarder la partie en cours dans un fichier sauvegarde.txt'''
+    
+     #Creation d'un fichier sauvegarde.txt en ecriture pour y stocker la configuration courante, les coordonnees et l'orientation de la fourmi
     fic = open("sauvegarde.txt", 'w')
+    
+    #Boucle pour stocker les elements de la configuration courante
     for i in range(n):
         for j in range(n):
             fic.write(str(config_courante[i][j]) + "\n")
+
+    #Ajout des coordonnees courantes et l'orientation de la fourmi a la fin du fichier txt
     fic.write(str(y_fourmi) + '\n')
     fic.write(str(x_fourmi) + '\n')
     fic.write(variable_orientation)
+
     fic.close()
 
 def load():
     '''Fonction permettant de charger une partie sauvegardee'''
     global config_courante, x_fourmi, y_fourmi, variable_orientation
 
+    #On ouvre le fichier en mode lecture pour recuperer la configuration courante, les coordonnees et l'orientation de la fourmi
     fic = open("sauvegarde.txt", 'r')
 
+    #Boucle permettant la recuperation des elements de la configuration courante
     for i in range(n):
         for j in range(n):
             val = int(fic.readline())
-            config_courante[i][j] = val
+            config_courante[i][j] = val     #On met a jour la configuration courante avec les valeurs de la partie a charger
     
-    lignes = fic.readlines()
-    x_fourmi = int(lignes[1])
+    lignes = fic.readlines()                #On stocke dans une liste les elements restants : coordonnees et orientation de la fourmi
+    x_fourmi = int(lignes[1])   
     y_fourmi = int(lignes[0])
     variable_orientation = lignes[2]
     fic.close()
-    return maj_grille()
+    return maj_grille()                     #On met a jour la grille avec la nouvelle configuration courante
 
 def retour(): #ENCORE EN PHASE DE DVPT
     '''Fonction qui permet de revenir d'une etape en arriere'''
@@ -288,17 +347,23 @@ def retour(): #ENCORE EN PHASE DE DVPT
     maj_grille()
 
 def fermer_fenetre():
+    '''Fonction permettant de fermer la fenetre'''
+
     fenetre.destroy()
 
 #########################################
 ### PARTIE PRINCIPALE
 #########################################
 
-##Creation des Widgets
+##CREATION DES WIDGETS
+
+#Widgets principaux
+
 fenetre = Tk()
 canevas = Canvas(fenetre, height=HAUTEUR, width=LARGEUR, highlightthickness=4, highlightbackground="ForestGreen")
 
-font_base = Font(family='Helvetica', size=12, weight='bold') #création d'une police de base avec mise en gras du texte
+#Creation d'une police de base avec mise en gras du texte
+font_base = Font(family='Helvetica', size=12, weight='bold') 
 
 #Boutons
 
@@ -308,7 +373,7 @@ bouton_creer_fourmi = Button(fenetre, text="Creer une fourmi", font=font_base, w
 bouton_play = Button(fenetre, text="Play", font=font_base, width=10, height=3, command=automate)
 
     #Bouton next pour passer les étapes une à une
-bouton_next = Button(fenetre, text="Next", font=font_base, width=10, height=3, command=lambda:deplacement("not automate"))
+bouton_next = Button(fenetre, text="Next", font=font_base, width=10, height=3, command=next)
 
     #Bouton pause pour mettre le jeu en pause
 bouton_pause = Button(fenetre, text="Pause", font=font_base, width=10, height=3, command=pause)
@@ -389,7 +454,7 @@ txt_orientation.grid(column=0, row=1, columnspan=3, padx=10)
     #label qui affiche l'orientation pour la fourmi choisi par l'utilisateur 
 txt_informatif.grid(column=0, row=0, columnspan=3, padx=10)
 
-#Placement des scales
+#Placement de scale
 scale_vitesse.grid(column=4, row =5)
 
 
