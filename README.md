@@ -1,6 +1,4 @@
 # PROJET-FOURMI-DE-LANGTON
-projet fourmi de Langton 
-
 GROUPE LDDBI
 
 INES MANOUR
@@ -9,13 +7,125 @@ LAURA LEFEVRE
 
 ADAM KEDDIS
 
-https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
+###############################################################################
 
-programme du jeu : 
+Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
+
+-Présentation de la fourmi de Langton :
+    La Fourmi de Langton est un automate cellulaire compose d’une grille a deux dimensions et d’une fourmi. L'objectif de ce projet est d'implémenter une interface graphique à l'aide de la bibliothèque Tkinter permettant d'afficher le comportement de cet automate.
+
+-Composantes :
+    - Une grille composée de cases pouvant être soit blanche soit noire. La grille a la propriété d'etre un tore, c'est à dire que si la foumi sort en bas, elle réaparaît en haut, si elle sort a droite, elle resort a gauche et vice versa.
+    - La fourmi possède une position sur la grille et une orientation.
+
+-Regles de base et deroulement d'une etape :
+    - Si la fourmi se trouve sur une case noire, elle tourne de 90° vers la gauche, change la couleur de la case en blanc et avance d'une case
+    - Si la fourmi se trouve sur un case blanche, elle tourne de 90° vers la droite, change la couleur de la case en noir et avance d'une case
 
 
-La Fourmi de Langton est un automate cellulaire compose d’une grille a deux dimensions et d’une fourmi avec simulation de ces déplacements.
+-Notice d'utilisation lors de l'execution du programme :
+    Lorsque l'on execute le programme, une interface graphique s'ouvre ("Projet 2 : Fourmi de Langton"). 
+    
+    Au centre de la fenetre se trouve la grille avec n cases (30 par defaut), en bas a droite un bouton quitter pour fermer la fenetre et sur la gauche un bouton pour creer une fourmi.
+    
+    Lorsque l'on clique sur "Creer une fourmi", le programme positionne aleatoirement une fourmi dans la grille (symbolise par une case noire) et des boutons avec des fleches s'affichent. Ces boutons permettent a l'utilisateur de choisir l'orientation de la fourmi (haut, bas, gauche, droite).
+    
+    Apres avoir choisi l'orientation de la fourmi, en haut a gauche est affiche l'orientation choisi par l'utilisateur et differents boutons/widgets apparaissent : 
+        - Bouton Play : permet de lancer l'automate de la fourmi de langton de maniere automatique
+        - Bouton Pause : permet de mettre l'automate en pause
+        - Bouton Next : permet de passer les etapes de l'automate une a une
+        - Bouton Retour : permet de revenir en arriere dans les etapes (en cours developpemment, fonction pas totalement fonctionnelle)
+        - Bouton Sauvegarde : permet de sauvegarder une partie de jeu dans un fichier .txt sous le nom de sauvegarde.txt
+        - Bouton Load : permet de charger une partie de jeu enregistre sous le nom de sauvegarde.txt
+        - Bouton Quitter : permet de quitter le jeu en fermant la fenetre
+        - Scale Temps d'execution (ms) : permet de choisir le temps entre les differentes etapes et donc de regler la vitesse d'execution (de 0 ms a 500 ms)
 
-déroulé du jeu : 
 
-l'utilisateur a le choix de l'orientation de la fourmi, à partir de cette information se découle un déplacement de la fourmi en fonction de la couleur de la case ou elle se trouve. Le jeu s'accommode aux choix de l'utilisateur avec des boutons pause , next , une acceleration de la vitesse ( plusieurs degres de vitesse pour un large choix).
+-Explications et details du programme en lui-meme :
+
+    *Structure generale :
+        Le code est structuré par une entete (nom projet, noms etudiants, filliere) et par 5 parties :
+            - IMPORT DES LIBRAIRIES : import des differentes librairies utilisees dans le programme et necessaire a son bon fonctionnement
+
+            - VARIABLES GLOBALES : creation des differentes variables globales du programme qui seront modifies lors des differents appels de fonctions
+
+            - DEFINITION DES FONCTIONS : definitions des differentes fonctions du programme
+
+            - CREATION ET PLACEMENT DES WIDGETS : creation et placement des differents widgets du programme : fenetre, canevas, font, boutons, labels, scale
+
+            - BOUCLE PRINCIPALE : partie permettant le lancement du programme avec l'appelle de la fonction principale "jeu_Fourmi()" ainsi que la fonction .mainloop() pour    lancer l'interface graphique de Tkinter
+
+    *Informations sur les variables globales modifiables par l'utilisateur :
+        - La largeur et la hauteur du canevas peuvent etre modifiees. 
+        Recomendation : garder les valeurs par defauts (700x700) pour garantir un affichage correct des widgets. 
+
+        - La constante de proportionnalite n a pour valeur par defaut n=30, cela signifie que la grille sera de 30x30. Cette constante peut etre modifiee ce qui permettra d'avoir un plus grand ou un moins grand nombre de cases dans la grille. 
+        Attention : plus n est grand plus le programme sera "gourmand" et risque d'avoir du mal a fonctionner. 
+
+
+    *Details et explications des fonctions :
+        - jeu_Fourmi(): 
+            Cette fonction est la fonction principale du jeu. Elle est appellee lors de l'execution du programme et permet le lancement du jeu.
+            Dans cette fonction, on appelle une premiere fonction qui permet de cacher les widgets qui ne doivent pas encore etre affiches.
+            Ensuite, on appelle une fonction permettant de la creation d'une configuration courante vide (liste imbriquees remplies de n 0)
+                -> Cette fonction est automatiquement appelee lors de l'execution du programme.
+
+        - widget_a_cacher(): 
+            Cette fonction est la premiere fonction appellee par la fonction jeu_Fourmi(). C'est elle qui permet de cacher les widgets lors de l'execution du programme. Les widgets caches sont des widgets comme play, next, etc. qui seront utiles lors du jeu (apres avoir creer une fourmi et choisi son orientation). Pour cacher ces differents widgets, on appelle dans cette fonction une autre fonction qui a la fonctionnalite de cacher n'importe quel widget envoye en parametre.
+                -> Cette fonction est automatiquement appelee lors de l'execution du programme.
+
+        - configuration_courante_vide():
+            Cette fonction est appelee par jeu_Fourmi() etpermet la creation d'une configuration courante vide, c'est a dire, une liste a deux dimensions representant une matrice avec n lignes et n colonnes. On modifie donc la variable globale configuration_courante en ajoutant n fois des listes de n 0.
+            Apres avoir cree notre configuration courante vide, on appelle une fonction permettant d'initialiser une grille proportionnelle a la taille de la configuration courante en se servant de cette variable globale.
+                -> Cette fonction est automatiquement appelee lors de l'execution du programme.
+
+        - init_grille():
+            Cette fonction est appelee par configuration_courante_vide() et permet de creer une grille representative de la configuration courante et proportionnelle a celle-ci. On se sert d'une variable globale "cases" ou on y ajoute les differentes cases crees par cette fonction.
+                -> Cette fonction est automatiquement appelee lors de l'execution du programme.
+
+         - maj_grille(): 
+            Cette fonction est appelee par differentes fonctions. Elle permet de mettre a jour la grille en se basant sur la configuration courante qui est modifie lors du jeu. En effet, lorsque la configuration courante est modifie, c'est a dire lorsque des 0 sont remplaces par des 1 ou inversement, cette fonction est appelee pour permettre l'affichage dans l'interface graphique des modifications faites. On parcours la configuration courante, si on a un 0, alors la case s'affiche blanche, si on a un 1, la case s'affiche noir. 
+                -> Cette fonction est automatiquement appelee par differentes fonctions du programme (cration_fourmi, ).
+
+            Idee a approfondir : Cette fonctionnalite du programme pourrait etre optimiser en trouvant une autre methode permettant de ne pas avoir a parcourir entierement la configuration courante. On pourrait par exemple utiliser les coordonnees de la fourmi et modifier directement cette valeur plutot que de parcourir entierement la configuration courante.
+
+        - creation_fourmi():
+            Cette fonction de creer une fourmi et de la placer de maniere aleatoire sur la grille.
+            On commence par attribuer des coordonnees aleatoires entre 0 et n-1, grace a la methode randint de la librairie random. Apres cette etape, nous avons nos coordonnees et nous pouvons donc modifier la configuration courante en ajouter un 1 aux nouvelles coordonnees de la fourmi, ce qui symbolisera la fourmi par une case noire. On appelle maj_grille() pour mettre la grille a jour.
+            Ensuite, la fonction appelle une autre fonction permettant de cacher le bouton qui permet de creer une fourmi.
+            Pour terminer, on appelle une fonction qui permet d'afficher un lot de fleche pour choisir l'orientation de la fourmi creee.
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton "bouton_creer_fourmi".
+
+        - hide(widget, presence:bool):
+            Cette fonction est la fonction permettant d'afficher ou de cacher n'importe quel widget donne en parametre. Le parametre presence permet quant a lui de dire a la fonction si le widget en question est affiche ou non et donc de lui dire s'il doit le cacher ou l'afficher. 
+            Si le parametre presence est sur True, cela signifie qu'il est affiche et donc que la fonction a pour objectif de le cacher en gardant en memoire les options de grilles. C'est a dire que l'on peu cacher et afficher autant de fois que l'on veut le widget, ces options comme sa position ne seront pas perdus mais gardes en memoire. Pour faire cela, on utilise la fonction .grid_remove(). 
+            A contrario, si le parametre presence est sur False, il est donc cache de l'interface graphique et cette fonction va permettre de l'afficher en utilisant simplement la fonction .grid().
+                -> Cette fonction est appelee par la fonction widget_a_cacher(), widget_a_afficher() et creation_fourmi().
+
+        - affiche_fleche():
+            Cette fonction permet simplement d'afficher les boutons fleches et le label associe. Ces boutons vont permettre a l'utilisateur de choisir l'orientation de la fourmi creer par ce dernier. Le label associe est un label permettant de dire a l'utilisateur de choisir l'orientation de la fourmi.
+            Pour ce faire, on appelle la fonction hide() avec le parametre de presence sur False pour permettre a la fonction d'afficher les widgets.
+                -> Cette fonction est automatiquement appelee par la fonction creation_fourmi
+
+        - cache_fleche(): 
+            Cette fonction permet simplement de cacher les boutons fleches et le label associe. En effet, apres le choix de l'orientation par l'utilisateur, il faut cacher les  boutons fleches et le label associe pour afficher ensuite ceux necessaires au jeu. 
+            Pour ce faire, on appelle de nouveau la fonction hide() mais avec le parametre de presence sur True pour permettre a la fonction de cacher ces widgets.
+                -> Cette fonction est automatiquement appelee par la fonction orientation_fourmi().
+
+        - changement_txt(label, txt_modif:str): 
+            Cette fonction permet de changer le texte d'un label. On passe en parametre le label a modifier ainsi que le texte que l'on veut mettre (une chaine de caractere est attendue).
+            Pour ce faire, on utilise la fonction .configure() avec le texte passe en parametre de la fonction.
+                -> Cette fonction est automatiquement appelee par la fonction orientation_fourmi().
+
+        - widget_a_afficher():
+            Cette fonction permet d'afficher les differents widgets necessaires au jeu.
+            Pour ce faire, on a de nouveau recours a la fonction hide avec comme parametre de presence False pour pouvoir les afficher.
+            On affiche un label de texte informatif qui permettra d'ecrire l'orientation choisi par l'utilisateur et les differents boutons : next, play, pause, save, load, retour et le scale vitesse.
+                -> Cette fonction est automatiquement appelee par la fonction orientation_fourmi().
+            
+        - orientation_fourmi(direction:str):
+            Cette fonction permet d'attribuer l'orientation de depart a la fourmi choisi par l'utilisateur.
+            On commence par cacher les fleches et le label en appellant la fonction cache_fleche et on affiche les differents widgets necessaires en appellant la fonction widget_a_afficher(). 
+            Cette fonction a pour parametre la direction choisi par l'utilisateur. En effet, en fonction du bouton sur lequel l'utilisater aura clique, ce parametre va varier entre : "haut", "bas", "gauche" et "droite".
+            Ainsi, en fonction de l'orientation, on va appeller la fonction changement_txt pour modifier le label txt_informatif pour ecrire et afficher l'orientation choisie.
+             
