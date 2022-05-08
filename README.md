@@ -24,6 +24,11 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
 
 
 -Notice d'utilisation lors de l'execution du programme :
+    Post condition au fonctionnement : 
+        - Avoir telecharge le fichier projet_Fourmi.py
+        - Avoir telecharge les 4 images : fleche_bas.png, fleche_haut.png, fleche_gauche.png, fleche_droite.png
+        - Avoir modifier le chemin vers les images dans la creation des boutons (lignes 390 à 393)
+
     Lorsque l'on execute le programme, une interface graphique s'ouvre ("Projet 2 : Fourmi de Langton"). 
     
     Au centre de la fenetre se trouve la grille avec n cases (30 par defaut), en bas a droite un bouton quitter pour fermer la fenetre et sur la gauche un bouton pour creer une fourmi.
