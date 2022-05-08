@@ -85,7 +85,7 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
 
          - maj_grille(): 
             Cette fonction est appelee par differentes fonctions. Elle permet de mettre a jour la grille en se basant sur la configuration courante qui est modifie lors du jeu. En effet, lorsque la configuration courante est modifie, c'est a dire lorsque des 0 sont remplaces par des 1 ou inversement, cette fonction est appelee pour permettre l'affichage dans l'interface graphique des modifications faites. On parcours la configuration courante, si on a un 0, alors la case s'affiche blanche, si on a un 1, la case s'affiche noir. 
-                -> Cette fonction est automatiquement appelee par differentes fonctions du programme (cration_fourmi, ).
+                -> Cette fonction est automatiquement appelee par differentes fonctions du programme (cration_fourmi, deplacement,).
 
             Idee a approfondir : Cette fonctionnalite du programme pourrait etre optimiser en trouvant une autre methode permettant de ne pas avoir a parcourir entierement la configuration courante. On pourrait par exemple utiliser les coordonnees de la fourmi et modifier directement cette valeur plutot que de parcourir entierement la configuration courante.
 
@@ -128,4 +128,52 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
             On commence par cacher les fleches et le label en appellant la fonction cache_fleche et on affiche les differents widgets necessaires en appellant la fonction widget_a_afficher(). 
             Cette fonction a pour parametre la direction choisi par l'utilisateur. En effet, en fonction du bouton sur lequel l'utilisater aura clique, ce parametre va varier entre : "haut", "bas", "gauche" et "droite".
             Ainsi, en fonction de l'orientation, on va appeller la fonction changement_txt pour modifier le label txt_informatif pour ecrire et afficher l'orientation choisie.
-             
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur les boutons fleches.
+        
+        - deplacement():
+            Cette fonction est la fonction permettant le deplacement de la fourmi.
+
+            Tout d'abord, la fonction doit verifier si la variable globale pause est sur False ou non. Si elle est sur False, cela signifie que le programme ne doit pas etre en pause. Ainsi, on demarre l'automate. En fonction de l'orientation de la fourmi, on va modifier les positions de la fourmi en fonction de son orientation, ensuite on appelle une fonction qui va verifier les coordonnees de la fourmi pour savoir si elle est a proximite d'un cote et donc devoir changer de cote car la grille a la fonctionnalite d'etre un tore comme dit precedemment. Ensuite, on modifie la variable globale de l'orientation et en fonction de la couleur de la case sur laquelle la fourmi se trouve et on modifie la couleur de cette derniere. Cette methode fonctionne puisque lorsque l'on creer un fourmi, on la place aleatoirement sur la grille en la representant par une case noir, lors de cette etape c'est l'utilisateur qui choisi l'orientation et donc n'est pas defini en fonction de la couleur de la case. Cela explique pourquoi la premiere etape est l'avancement d'une case par la fourmi. 
+            
+            Apres avoir effectuer le deplacement, on met a jour la grille en appellant la fonction maj_grille().
+            
+            Ensuite, on regarde si la variabe globale auto est sur True. Si elle est sur True, alors cela signifie que le programme doit s'executer de maniere automatique. 
+            
+            Ainsi, on rappelle la fonction deplacement de maniere automatique grace a la methode .after(). On passe en premier parametre la vitesse d'execution que l'on recupere grace au scale place sur l'interface graphique par un .get(). En second parametre on met la fonction deplacement qui permet de rappeller notre fonction de maniere automatique. L'utilisateur peut donc regler en temps reel la temps d'execution entre les differents deplacements de la fourmi.
+                -> Cette fonction est automatiquement appelee par la fonction next() et automate().
+
+        - verif_coordonnee():
+            Cette fonction permet de verifier les coordonnees de la fourmi lors de ses deplacements. C'est cette fonction qui permet de remplir la condition associe a la grille qui dit que c'est un tore. Ainsi, lorsque la fourmi est colle au cote :
+                - haut ; la fonction va modifier sa coordonnee y en la passant en bas de la grille (y=n-1).
+                - bas ; la fonction va modifier sa coordonnee y en la passant en haut de la grille (y=0)
+                - gauche ; la fonction va modifier sa coordonnee x en la passant a droite de la grille (x=n-1)
+                - droite ; la fonction va modifier sa coordonnee x en la passant a gauche de la grille (x=0)
+
+                -> Cette fonction est automatiquement appellee par la fonction deplacement.
+        
+        - automate():
+            Cette fonction permet d'activer le deplacement automatique de la fourmi et donc de lancer l'automate associe au jeu.
+
+            Pour ce faire, on passe la variable pause en False pour etre sur quelle soit bien sur False (variable pouvant etre modifier lorsque l'utilisateur clique sur le bouton pause). Si on ne met pas cette variable sur False, alors le deplacement ne pourra pas se faire dans la fonction deplacement.
+
+            On passe la fonction auto en True, pour que lors de l'appel de la fonction deplacement, on puisse rentrer dans le if permettant le rappeller de maniere automatique la fonction deplacement.
+
+            On appelle ensuite la fonction deplacement(). La variable pause mise sur False et le mode auto sur True, la fonction deplacement() sera appellee de maniere automatique et il sera alors possible de voir sur l'interface graphique le deplacement de la fourmi.
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Play.
+
+        - pause():
+            Cette fonction permet de mettre l'automate en pause.
+
+            Pour ce faire, la fonction modifie simplement la variable pause en True. Ainsi, dans la fonction deplacement, la variable pause sera sur True et l'automate s'arretera.
+
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Pause.
+
+        - next():
+            Cette fonction permet de passer les etapes du programme une a une.
+
+            Pour ce faire, si la variable pause est sur True, on la passe en False pour permettre le deplacement lors de l'appel de la fonction deplacement(). Ensuite, si la variable auto est sur True, on la passe en False pour s'assurer que dans l'appel de la fonction deplacement, elle ne sera pas rappellee de maniere automatique.
+            Apres avoir verifier et modifier si necessaire les variables globales pause et auto on peut appeller la fonction deplacement pour permettre un seul deplacement.
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Next.
+            
+        - save(): 
+            Cette fonction permet de sauvegarder une partie dans un fichier texte sous le nom de "sauvegarde.txt".

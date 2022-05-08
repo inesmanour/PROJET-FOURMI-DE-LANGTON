@@ -273,8 +273,12 @@ def next():
     '''Fonction permettant de passer les etapes une a une'''
     global auto, var_pause
 
-    var_pause = False
-    auto = False
+    if var_pause == True :
+        var_pause = False
+    
+    if auto == True:
+        auto = False
+        
     deplacement()
 
 def save():
