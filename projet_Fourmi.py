@@ -11,9 +11,9 @@
 ## IMPORT DES LIBRAIRIES
 #########################################
 
-from tkinter import *
-from random import randint
-from tkinter.font import Font
+from tkinter import *           #On importe toute la librairie tkinter
+from random import randint      #On importe seulement la methode randint de la librairie randint
+from tkinter.font import Font   #On importe seulement la methode Font de la librairie tkinter.font
 
 
 #########################################
