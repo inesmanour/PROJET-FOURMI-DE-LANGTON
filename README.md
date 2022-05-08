@@ -85,7 +85,7 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
 
          - maj_grille(): 
             Cette fonction est appelee par differentes fonctions. Elle permet de mettre a jour la grille en se basant sur la configuration courante qui est modifie lors du jeu. En effet, lorsque la configuration courante est modifie, c'est a dire lorsque des 0 sont remplaces par des 1 ou inversement, cette fonction est appelee pour permettre l'affichage dans l'interface graphique des modifications faites. On parcours la configuration courante, si on a un 0, alors la case s'affiche blanche, si on a un 1, la case s'affiche noir. 
-                -> Cette fonction est automatiquement appelee par differentes fonctions du programme (cration_fourmi, deplacement,).
+                -> Cette fonction est automatiquement appelee par differentes fonctions du programme (creation_fourmi, deplacement, load, retour).
 
             Idee a approfondir : Cette fonctionnalite du programme pourrait etre optimiser en trouvant une autre methode permettant de ne pas avoir a parcourir entierement la configuration courante. On pourrait par exemple utiliser les coordonnees de la fourmi et modifier directement cette valeur plutot que de parcourir entierement la configuration courante.
 
@@ -176,4 +176,87 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
                 -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Next.
             
         - save(): 
-            Cette fonction permet de sauvegarder une partie dans un fichier texte sous le nom de "sauvegarde.txt".
+            Cette fonction permet de sauvegarder une partie en cours dans un fichier texte sous le nom de "sauvegarde.txt".
+
+            La fonction commence par ouvrir le fichier sauvegarde.txt en fonction 'write' pour permettre l'ecriture dans le fichier. Si celui-ci n'existe pas, alors il est automatiquement cree.
+
+            Ainsi, par le biais d'une boucle, on ecrit chaque element de la configuration courante dans le fichier txt en y ajoutant un retour a la ligne a chaque fois. On oublie pas de convertir le 0 ou le 1 de la configuration courante en chaine de caractere pour qu'il puisse etre ecrit dans le fichier .txt.
+
+            On ecrit ensuite a la fin, l'un apres l'autre : la position y, la position x et la variable orientation. 
+            Ainsi, il sera facile de recupere ses informations essentielles pour pourvoir ensuite charger une partie.
+
+            On n'oublie pas ensuite de fermer le fichier avec .close().
+
+            Attention : le fichier sera sauvegarder dans le dossier courant (celui ou vous vous trouvez au niveau du terminal)
+
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Sauvegarde.
+        
+        - load():
+            Cette fonction permet de charger une partie sauvegardee sous le nom de "sauvegarde.txt".
+
+            La fonction commence par ouvrir le fichier sauvegarde.txt en mode lecture ("read"). 
+
+            Ainsi, par le biais d'une boucle, on recupere les valeurs du fichier .txt en convertissant les element en int. On modifie la configuration courante avec la valeur recuperer et donc recuperer la configuration courante voulu sauvegarder prealablement.
+
+            On stocke ensuite dans une variable les derniers elements restants (les positions et l'orientation). On a donc une liste a compose de trois elements : y_fourmi, x_fourmi, variable_orientation. 
+            On peut ensuite grace aux indices de ces elements, les recuperer et modifier nos variables globales avec les bonnes valeurs. 
+
+            On n'oublie pas ensuite de fermer le fichier acec .close().
+
+            Pour finir, on met a jour la grille pour afficher la configuration courante sauvegardee.
+
+            Attention : si vous ne vous trouvez pas dans le fichier ou sauvegarde.txt a ete cree, la fonction ne fonctionnera pas. Pour ce faire, utiliser la fonction cd suivi du chemin vers le fichier .txt dans le terminal.
+
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Load.
+
+        - retour():
+            Cette fonction permet de retourner en arriere dans les etapes du jeu.
+
+            La fonction regarde la couleur de la case sur lequel se trouve la fourmi. Si c'est 1 (noir), la case est remise en blanche (0), et inversement, si c'est 0, la case est remise en noir (1). Ensuite, en fonction de l'orientation de la fourmi il est possible de retrouver l'enchainement des etapes et donc de remonter dans ces dernieres.
+
+            La fonction appelle la fonction maj_grille a chaque etape rembobinee.
+
+            Information : Cette fonction n'est pas encore fonctionnelle, elle est en developpement mais nous n'avons pas encore reussi a la faire fonctionner
+
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Retour.
+
+        - fermer_fenetre():
+            Cette fonction permet de fermer la fenetre et donc de quitter le jeu.
+
+            Pour ce faire, on appelle simplement la fonction propre a Tkinter : .destroy().
+
+                -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Quitter.
+
+    
+    * Informations sur la partie de la creation des widgets et les placements :
+        Cette partie est aussi structure en differentes 2 sous-parties (Creation, Placement), elles-memes structurees en plusieurs sous-parties :
+
+        Partie Creation :
+            - Widgets principaux : Creation de la fenetre, creation du canevas pour l'affichage de la grille et ajout du titre
+
+            - Creation d'une police de "base" : Police d'ecriture utilisee a chaque fois (caractere en gras, type Helvetica et de taille 12)
+
+            - Creation des Boutons : tous les boutons sont nommes de la meme maniere : bouton_nomDuBouton
+                nomDesBoutons : creer_fourmi, play, next, pause, haut, bas, droit, gauche, save, load, retour, quitter
+
+                Les boutons associes aux fleches (haut, bas, droit, gauche) pour le choix de l'orientation ont la specificite d'afficher une image a la place des caracteres. Pour ce faire, une partie est dedie au chargement des images. On creer donc 4 variables dans lequel on stocke l'image grace a la methode propre a Tkinter : PhotoImage. Dans cette methode, on doit mettre le chemin vers l'image a charger. Il ne faut donc pas oublier d'avoir ces 4 images dans le dossier et modifier le chemin pour que l'affichage fonctionne correctement. Le resultat a l'affichage doit etre 4 fleches avec les differentes orientations.
+                De plus, lors de la creation des boutons fleches, pour pouvoir appeller la fonction orientation (lorsque l'on clique dessus) avec le parametre qu'il faut, on passe une fonction lambda avec l'orientation associee. 
+            
+            - Creation des labels : creation de 2 labels :
+                - txt_orientation : demande a l'utilisateur de choisir l'orientation de la fourmi
+                - txt_informatif  : affiche l'orientation choisie par l'utilisateur
+
+            - Creation de scale : creation d'un scale pour permettre a l'utilisateur de choisir le temps d'execution des deplacements de la fourmi, donc de choisir la vitesse  de celui-ci. Le scale va de 0 a 500, ces variables peuvent etre modifiees.
+
+        Partie Placement :
+            - Canevas : On place le canevas au centre de la fenetre
+
+            - Boutons : Les boutons sont places autour du canevas et on ajoute un padx de 5 pour eviter qu'ils ne soient colles au canevas. 
+
+            - Labels : Les labels sont places sur le cote gauche de la fenetre et on ajoute un padx de 10 pour eviter qu'ils ne soient colles au canevas.
+
+            - Scale : Le scale est place sous le canevas et donc sous la grille en position horizontale.
+
+
+Signature : Ce programme a ete realise par Ines MANOUR, Laura LEFEVRE et Adam KEDDIS ; etudiants a l'UVSQ en LDDBI ; dans le cadre d'un projet du module IN200.
+            08/05/2022

@@ -278,7 +278,7 @@ def next():
     
     if auto == True:
         auto = False
-        
+
     deplacement()
 
 def save():
@@ -313,11 +313,12 @@ def load():
             config_courante[i][j] = val     #On met a jour la configuration courante avec les valeurs de la partie a charger
 
     lignes = fic.readlines()                #On stocke dans une liste les elements restants : coordonnees et orientation de la fourmi
-    x_fourmi = int(lignes[1])
     y_fourmi = int(lignes[0])
+    x_fourmi = int(lignes[1])
     variable_orientation = lignes[2]
     fic.close()
-    return maj_grille()                     #On met a jour la grille avec la nouvelle configuration courante
+
+    maj_grille()                     #On met a jour la grille avec la nouvelle configuration courante
 
 def retour(): #ENCORE EN DVPT
     '''Fonction qui permet de revenir d'une etape en arriere'''
