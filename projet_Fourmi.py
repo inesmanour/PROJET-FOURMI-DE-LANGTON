@@ -1,6 +1,6 @@
 #########################################
 # Projet 2 : Fourmi de Langton
-#
+#########################################
 # LAURA LEFEVRE
 # ADAM KEDDIS
 # MANOUR INES
@@ -48,7 +48,7 @@ auto = False
 def jeu_Fourmi():
     '''Fonction intermédiaire permettant le lancement du jeu'''
     
-    widget_a_cacher()   #Appel pour cacher les boutons non utilses au lancement du programme
+    widget_a_cacher()   #Appel pour cacher les boutons non utilises au lancement du programme
     configuration_courante_vide()
 
 def widget_a_cacher():
@@ -353,10 +353,8 @@ def fermer_fenetre():
     fenetre.destroy()
 
 #########################################
-### PARTIE PRINCIPALE
+## CREATION ET PLACEMENT DES WIDGETS
 #########################################
-
-##CREATION DES WIDGETS
 
 #Widgets principaux
 
@@ -455,10 +453,12 @@ txt_orientation.grid(column=0, row=1, columnspan=3, padx=10)
     #label qui affiche l'orientation pour la fourmi choisi par l'utilisateur 
 txt_informatif.grid(column=0, row=0, columnspan=3, padx=10)
 
-#Placement de scale
+#Placement du scale
 scale_vitesse.grid(column=4, row =5)
 
+#########################################
+## BOUBLE PRINCIPALE
+#########################################
 
-###BOUCLE PRINCIPALE
 jeu_Fourmi()
 fenetre.mainloop()
