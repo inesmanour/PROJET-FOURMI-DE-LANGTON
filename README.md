@@ -45,6 +45,8 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
         - Bouton Quitter : permet de quitter le jeu en fermant la fenetre
         - Scale Temps d'execution (ms) : permet de choisir le temps entre les differentes etapes et donc de regler la vitesse d'execution (de 0 ms a 500 ms)
 
+    Le programme est code de sorte qu'il est possible de lancer l'automate, de la mettre sur pause, de le relancer et de realiser cette operation autant de fois que l'on veut. Il est aussi possible de lancer l'automate, de le mettre sur pause, et d'utiliser le bouton next pour passer les etapes une a une. Il est donc possible de jongler entre ces trois boutons comme on le souhaite. De plus, si l'automate est actif et que l'on clique sur le bouton next, l'automate s'arrete et l'action du bouton next s'execute. 
+
 
 -Explications et details du programme en lui-meme :
 
