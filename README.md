@@ -1,4 +1,8 @@
 # PROJET-FOURMI-DE-LANGTON
+
+README-Version Longue
+###############################################################################
+
 GROUPE LDDBI
 
 INES MANOUR
@@ -24,7 +28,7 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
 
 
 -Notice d'utilisation lors de l'execution du programme :
-    Post condition au fonctionnement : 
+    Post condition au bon fonctionnement : 
         - Avoir telecharge le fichier projet_Fourmi.py
         - Avoir telecharge les 4 images : fleche_bas.png, fleche_haut.png, fleche_gauche.png, fleche_droite.png
         - Avoir modifier le chemin vers les images dans la creation des boutons (lignes 390 à 393)
@@ -64,7 +68,7 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
 
     *Informations sur les variables globales modifiables par l'utilisateur :
         - La largeur et la hauteur du canevas peuvent etre modifiees. 
-        Recomendation : garder les valeurs par defauts (700x700) pour garantir un affichage correct des widgets. 
+        Recommandation : garder les valeurs par defauts (700x700) pour garantir un affichage correct des widgets. 
 
         - La constante de proportionnalite n a pour valeur par defaut n=30, cela signifie que la grille sera de 30x30. Cette constante peut etre modifiee ce qui permettra d'avoir un plus grand ou un moins grand nombre de cases dans la grille. 
         Attention : plus n est grand plus le programme sera "gourmand" et risque d'avoir du mal a fonctionner. 
@@ -82,7 +86,7 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
                 -> Cette fonction est automatiquement appelee lors de l'execution du programme.
 
         - configuration_courante_vide():
-            Cette fonction est appelee par jeu_Fourmi() etpermet la creation d'une configuration courante vide, c'est a dire, une liste a deux dimensions representant une matrice avec n lignes et n colonnes. On modifie donc la variable globale configuration_courante en ajoutant n fois des listes de n 0.
+            Cette fonction est appelee par jeu_Fourmi() et permet la creation d'une configuration courante vide, c'est a dire, une liste a deux dimensions representant une matrice avec n lignes et n colonnes. On modifie donc la variable globale configuration_courante en ajoutant n fois des listes de n 0.
             Apres avoir cree notre configuration courante vide, on appelle une fonction permettant d'initialiser une grille proportionnelle a la taille de la configuration courante en se servant de cette variable globale.
                 -> Cette fonction est automatiquement appelee lors de l'execution du programme.
 
@@ -94,10 +98,10 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
             Cette fonction est appelee par differentes fonctions. Elle permet de mettre a jour la grille en se basant sur la configuration courante qui est modifie lors du jeu. En effet, lorsque la configuration courante est modifie, c'est a dire lorsque des 0 sont remplaces par des 1 ou inversement, cette fonction est appelee pour permettre l'affichage dans l'interface graphique des modifications faites. On parcours la configuration courante, si on a un 0, alors la case s'affiche blanche, si on a un 1, la case s'affiche noir. 
                 -> Cette fonction est automatiquement appelee par differentes fonctions du programme (creation_fourmi, deplacement, load, retour).
 
-            Idee a approfondir : Cette fonctionnalite du programme pourrait etre optimiser en trouvant une autre methode permettant de ne pas avoir a parcourir entierement la configuration courante. On pourrait par exemple utiliser les coordonnees de la fourmi et modifier directement cette valeur plutot que de parcourir entierement la configuration courante.
+            Idee a approfondir : Cette fonctionnalite du programme pourrait etre optimisee en trouvant une autre methode permettant de ne pas avoir a parcourir entierement la configuration courante. On pourrait par exemple utiliser les coordonnees de la fourmi et modifier directement cette valeur plutot que de parcourir entierement la configuration courante.
 
         - creation_fourmi():
-            Cette fonction de creer une fourmi et de la placer de maniere aleatoire sur la grille.
+            Cette fonction permet de creer une fourmi et de la placer de maniere aleatoire sur la grille.
             On commence par attribuer des coordonnees aleatoires entre 0 et n-1, grace a la methode randint de la librairie random. Apres cette etape, nous avons nos coordonnees et nous pouvons donc modifier la configuration courante en ajouter un 1 aux nouvelles coordonnees de la fourmi, ce qui symbolisera la fourmi par une case noire. On appelle maj_grille() pour mettre la grille a jour.
             Ensuite, la fonction appelle une autre fonction permettant de cacher le bouton qui permet de creer une fourmi.
             Pour terminer, on appelle une fonction qui permet d'afficher un lot de fleche pour choisir l'orientation de la fourmi creee.
@@ -194,7 +198,7 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
 
             On n'oublie pas ensuite de fermer le fichier avec .close().
 
-            Attention : le fichier sera sauvegarder dans le dossier courant (celui ou vous vous trouvez au niveau du terminal)
+            Attention : le fichier sera sauvegarde dans le dossier courant (celui ou vous vous trouvez au niveau du terminal)
 
                 -> Cette fonction est automatiquement appelee lorsque l'utilisateur clique sur le bouton Sauvegarde.
         
@@ -236,7 +240,7 @@ Lien du GitHub : https://github.com/uvsq22103405/PROJET-FOURMI-DE-LANGTON.git
 
     
     * Informations sur la partie de la creation des widgets et les placements :
-        Cette partie est aussi structure en differentes 2 sous-parties (Creation, Placement), elles-memes structurees en plusieurs sous-parties :
+        Cette partie est aussi structure en 2 sous-parties (Creation, Placement), elles-memes structurees en plusieurs sous-parties :
 
         Partie Creation :
             - Widgets principaux : Creation de la fenetre, creation du canevas pour l'affichage de la grille et ajout du titre
